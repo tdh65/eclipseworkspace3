@@ -16,7 +16,8 @@ public class TestCalc {
 		//FenetreGridLayout fen = new FenetreGridLayout();
 		//FenCalc fec = new FenCalc();
 		System.out.println("main1");
-
+		System.out.println("main1");
+		System.out.println("main1");
 	}
    
 }
