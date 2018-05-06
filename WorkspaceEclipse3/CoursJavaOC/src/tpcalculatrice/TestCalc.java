@@ -18,6 +18,7 @@ public class TestCalc {
 		System.out.println("main1");
 		System.out.println("main1");
 		System.out.println("main1");
+		System.out.println("main1 - git");
 	}
    
 }
