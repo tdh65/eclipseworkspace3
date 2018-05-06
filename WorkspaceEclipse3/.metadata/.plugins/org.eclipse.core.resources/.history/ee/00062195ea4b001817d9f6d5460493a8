@@ -1,0 +1,26 @@
+package TestAWT;
+
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
+
+public class Panneau extends JPanel {
+	public void  paintComponent(Graphics g) {
+		// on voit cette phrase chaque fois la methode est executee
+		
+		// g.fillOval(20, 20, 75, 75);
+		// on veut parfaitement centrer le ronds
+		int x1 = this.getWidth()/4; 
+		int y1 = this.getHeight()/4;
+		int x2 = this.getWidth()/2;
+		int y2 = this.getHeight()/2;
+		// g.fillOval(x1, y1, x2, y2 );
+		affiche("je suis executee x : " + x1 + " y1 : " + y1  + " X2 : " + x2 + " y2 : " + y2  );
+		g.drawOval(x1, y1, x2, y2);
+		g.drawRect(x1 *2 , y1*2, x2*2, y2*2);
+	}
+	protected void affiche(String str ) {
+		System.out.println(str);
+	}
+
+}

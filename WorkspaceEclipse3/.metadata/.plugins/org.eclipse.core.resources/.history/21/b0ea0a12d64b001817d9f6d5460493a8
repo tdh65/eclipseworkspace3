@@ -1,0 +1,26 @@
+package TestAWT;
+import javax.swing.JFrame ;
+public class TestAwt {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		JFrame fenetre = new JFrame() ;
+		// definir sa taille 400 pixels e largg et 100 de haut
+		fenetre.setSize(400,100);
+		
+		// devfinit le titre 
+		fenetre.setTitle("Ma premiere fenetre en java");
+		
+		// on demande a l objet de se positionner au centre 
+		fenetre.setLocationRelativeTo(null);
+		
+		// termine le process lorsque on clique sur croix rouge
+		fenetre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		
+		// et on la rend visible 
+		fenetre.setVisible(true);
+
+	}
+
+}

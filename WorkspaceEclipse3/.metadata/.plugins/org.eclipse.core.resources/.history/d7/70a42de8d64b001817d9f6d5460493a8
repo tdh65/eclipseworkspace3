@@ -1,0 +1,21 @@
+package TestAWT;
+import javax.swing.JFrame ;
+
+
+public class TestAwt {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Fenetre  fen = new Fenetre() ;
+		//fen.add()
+		// modifier l endroite ou est la fenetre (cad different de setLocationRelativeTo()
+		// coordonnees 0,0  situe au coin superieur gauche
+		fen.setLocation(-600, -600);
+		// empecher le redimensionnement 
+		fen.setResizable(true);
+		
+		
+
+	}
+
+}

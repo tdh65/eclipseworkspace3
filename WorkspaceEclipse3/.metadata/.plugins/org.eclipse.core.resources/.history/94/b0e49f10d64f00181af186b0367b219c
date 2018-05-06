@@ -1,0 +1,37 @@
+package tpcalculatrice;
+import java.text.DecimalFormat;
+public class TestCalc {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		System.out.println("main0");
+		String c  ="145696.2111425232336659" ;
+		double a = 145696.2111425232336659;
+		double b = a - Math.rint(a) ; 
+		 
+		System.out.println("rint " + Math.rint(a)  + " decimale : "  + (b) );
+		System.out.println("Floor a " + Math.floor(a) + " floor rint a " + Double.valueOf(c).doubleValue() )  ;
+		System.out.println("maximumFractionDigit  a " + decimal(a) + " floor rint a " + Double.valueOf(c).doubleValue() )  ;
+		//FenetreGridLayout fen = new FenetreGridLayout();
+		//FenCalc fec = new FenCalc();
+		System.out.println("main1");
+
+	}
+    public static double decimal (double d) {
+        // on crée un DecimalFormat pour formater le double en chaine :
+        DecimalFormat df = new DecimalFormat();
+        df.setGroupingUsed(false);            // Pas de regroupement dans la partie entière
+        df.setMinimumFractionDigits(1);        // Au minimum 1 décimale
+        df.setMaximumFractionDigits(340);    // Au maximum 340 décimales (valeur max. pour les doubles / voir la doc)
+ 
+        // On formate le double en chaine
+        String str = df.format(d);
+        // On récupère le caractère séparateur entre la partie entière et décimale :
+        char separator = df.getDecimalFormatSymbols().getDecimalSeparator();
+        // On ne récupère que la partie décimale :
+        str = str.substring( str.indexOf(separator) + 1 );
+        // Que l'on transforme en double :
+        return Double.parseDouble(str);
+    }
+
+}
