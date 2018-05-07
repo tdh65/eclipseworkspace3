@@ -1,4 +1,5 @@
 package tpcalculatrice;
+
 import java.math.*;
 import java.text.DecimalFormat;
 import java.awt.BorderLayout;
@@ -25,6 +26,9 @@ public class FenCalc extends JFrame {
 	private byte operation; // l'operateur selectionne
 	private double valEnCours = 0; // le resultat intermediaire
 	private double saisie = 0;
+	private String partieEntiereSaisie = ""; // la partie entiere de la saisie en cours
+	private String partieDecimaleSaisie = ""; // la partie decimale sans le "."
+	private String saisieDoubleText = ""; //
 	private boolean efface = false;
 	boolean decimal = false; // indique si le signe "." est presse et donc on concatene apres la virgule
 	private JButton bouton = new JButton("Mon premier bouton");
@@ -99,7 +103,7 @@ public class FenCalc extends JFrame {
 		Font ft = new Font("Tahoma", Font.LAYOUT_RIGHT_TO_LEFT, 16);
 		this.afficheur.setFont(ft);
 		this.afficheur.setHorizontalAlignment(JLabel.RIGHT);
-
+		this.raz();
 		String t = String.valueOf(valEnCours);
 
 		this.afficheur.setText(t);
@@ -212,15 +216,14 @@ public class FenCalc extends JFrame {
 					// ce sont des chiffres on les concatene
 					affiche("ajout chiffre nom bouton  " + arg0.getSource());
 					String res = concateneChiffre(afficheur.getText(), sourceArg);
-					affiche("res = " + res);
-					try {
-						saisie = Double.valueOf(res) ;
-					} catch (NumberFormatException ex) {
-						ex.printStackTrace();
-						
-					}
-						
-					
+					affiche("listener res = " + res);
+					/*
+					 * try { saisie = Double.valueOf(res) ; } catch (NumberFormatException ex) {
+					 * ex.printStackTrace();
+					 * 
+					 * }
+					 */
+
 					mettreAJourAfficheur(res);
 					afficheur.setText(res);
 				}
@@ -234,6 +237,9 @@ public class FenCalc extends JFrame {
 	private void raz() {
 		this.saisie = 0;
 		this.valEnCours = 0;
+		this.partieDecimaleSaisie = "";
+		this.partieEntiereSaisie = "0";
+		this.decimal = false;
 	}
 
 	/*
@@ -263,65 +269,30 @@ public class FenCalc extends JFrame {
 	private String concateneChiffre(String saisie, String strAConcat) {
 		String resultat = "";
 
-		// est un nombre decimal si a virgule et un chiffre <>0
-		// on parcourt la saisie : si virgule et 000 n est pas decimal on decale les
-		// unites
-		// si virgule et un chiffre different de zero est decimal et on
-		affiche("Avant split saisie = " + saisie  + " strconcat = " + strAConcat);
-		String[] val = saisie.split(".",2);
-		String[] val3 = saisie.split(".", 3) ;
-		/*for(int i=0; va
-		forEach(String a : val3){
-			affiche("val3 + " a) ;
-		}*/
-		affiche("val 0 "  + val[0] + " val 1 " + val[1] ) ;
-		affiche ("test avec cast numerique");
-		double partieEntiere ; 
-		double saisieDouble ; 
-		double x = 0 , y = 0 , z = 0 ;
-		try {
-			saisieDouble = Double.parseDouble(saisie);
-			partieEntiere  =  Double.parseDouble(saisie) ;
-			
-			x = Math.rint(saisieDouble) ;
-			y = saisieDouble - partieEntiere ;
-			z = Integer.parseInt(strAConcat) ;
-		}catch(NumberFormatException ex) {
-			
-			affiche("Erreur conversion saisie " + saisie );
-			ex.printStackTrace();
-		}
-		affiche("partie entiere " +  x );
-		
-		affiche("partie decimale saisie-l " + y) ;
-		if (decimal) {
-			if (y == 0.0)
-				y= z/10 ;
-			else
-				y = z ;
-		}else {
-			x = x*10 + z ;
-		}
-		
-		// val 0 est la partie entiere
-		// val 1 est la partie decimale
-	/*
-		if (this.decimal == true) {
-			// est decimal
-			if (val[1].equals(".00")) {
-				val[1] = strAConcat;
-
-			} else {
-				val[1] = val[1] + strAConcat;
-			}
-
+		if (decimal) {/*
+						 * if (y == 0.0) y= z/10 ; else y = (y/10) + z ; }else { x = x*10 + z ;
+						 */
+			this.partieDecimaleSaisie = this.partieDecimaleSaisie + (strAConcat);
 		} else {
-			val[0] = val[0] + (strAConcat);
+			affiche("avant concat :" + this.partieEntiereSaisie + " concat " + strAConcat);
+			if (this.partieEntiereSaisie.equals("0"))
+				this.partieEntiereSaisie = strAConcat;
+			else
+				this.partieEntiereSaisie = this.partieEntiereSaisie + strAConcat;
+
+			affiche("apres concat :" + this.partieEntiereSaisie);
+
 		}
-		resultat = val[0].concat(val[1]);
-		affiche("fin concatene res = " + resultat );
-		*/
-		resultat = String.valueOf(x+y) ;
+		resultat = this.partieEntiereSaisie + "." + this.partieDecimaleSaisie;
+		try {
+			this.saisie = Double.parseDouble(resultat);
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+
+		}
+		affiche("Resultat : string : " + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);
+		affiche("saisie Double : " + this.saisie);
+
 		return resultat;
 
 	}
@@ -329,44 +300,43 @@ public class FenCalc extends JFrame {
 	public void affiche(String str) {
 		System.out.println(str);
 	}
+
 	/*
-	 * rafraichit l afficheur 
+	 * rafraichit l afficheur
 	 */
-	protected String  mettreAJourAfficheur(String val) {
-		affiche(" dans mettreAJourAfficheur val : " + val + " saisie " + saisie );
-		String valeurafficheur ; 
-		
+	protected String mettreAJourAfficheur(String val) {
+		affiche(" dans mettreAJourAfficheur val : " + val + " saisie " + saisie);
+		String valeurafficheur;
+
 		if (!decimal) {
 			// n affiche pas le .00
-			return  new String(val.split(".", 2)[0] );
+			return new String(val.split(".", 2)[0]);
 		} else
-			return  new String( val ) ;
-/*
-		affiche("dans mettreAJourAfficheur getText " + this.afficheur.getText() + " valeurafficheur " + valeurafficheur) ;
-		
-		this.afficheur.setText(valeurafficheur);
-		this.afficheur.repaint();
-		repaint();
-	*/	
-		
-		
+			return new String(val);
+		/*
+		 * affiche("dans mettreAJourAfficheur getText " + this.afficheur.getText() +
+		 * " valeurafficheur " + valeurafficheur) ;
+		 * 
+		 * this.afficheur.setText(valeurafficheur); this.afficheur.repaint(); repaint();
+		 */
 
 	}
-	 public static double decimal (double d) {
-	        // on crée un DecimalFormat pour formater le double en chaine :
-	        DecimalFormat df = new DecimalFormat();
-	        df.setGroupingUsed(false);            // Pas de regroupement dans la partie entière
-	        df.setMinimumFractionDigits(1);        // Au minimum 1 décimale
-	        df.setMaximumFractionDigits(340);    // Au maximum 340 décimales (valeur max. pour les doubles / voir la doc)
-	 
-	        // On formate le double en chaine
-	        String str = df.format(d);
-	        // On récupère le caractère séparateur entre la partie entière et décimale :
-	        char separator = df.getDecimalFormatSymbols().getDecimalSeparator();
-	        // On ne récupère que la partie décimale :
-	        str = str.substring( str.indexOf(separator) + 1 );
-	        // Que l'on transforme en double :
-	        return Double.parseDouble(str);
-	    }
+
+	public static double decimal(double d) {
+		// on crée un DecimalFormat pour formater le double en chaine :
+		DecimalFormat df = new DecimalFormat();
+		df.setGroupingUsed(false); // Pas de regroupement dans la partie entière
+		df.setMinimumFractionDigits(1); // Au minimum 1 décimale
+		df.setMaximumFractionDigits(340); // Au maximum 340 décimales (valeur max. pour les doubles / voir la doc)
+
+		// On formate le double en chaine
+		String str = df.format(d);
+		// On récupère le caractère séparateur entre la partie entière et décimale :
+		char separator = df.getDecimalFormatSymbols().getDecimalSeparator();
+		// On ne récupère que la partie décimale :
+		str = str.substring(str.indexOf(separator) + 1);
+		// Que l'on transforme en double :
+		return Double.parseDouble(str);
+	}
 
 }

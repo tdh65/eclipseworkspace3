@@ -14,7 +14,7 @@ public class TestCalc {
 		System.out.println("maximumFractionDigit  a " + FenCalc.decimal(a) + " floor rint a " + Double.valueOf(c).doubleValue() )  ;
 		
 		//FenetreGridLayout fen = new FenetreGridLayout();
-		//FenCalc fec = new FenCalc();
+		FenCalc fec = new FenCalc();
 		System.out.println("main1");
 		System.out.println("main1");
 		System.out.println("main1");
