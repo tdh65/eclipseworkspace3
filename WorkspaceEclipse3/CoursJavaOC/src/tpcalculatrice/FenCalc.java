@@ -23,11 +23,12 @@ public class FenCalc extends JFrame {
 	private Panneau panOperateur;
 	private Panneau panAfficheur;
 	private JLabel afficheur;
-	private byte operation; // l'operateur selectionne
+	private String operation; // l'operateur selectionne
 	private double valEnCours = 0; // le resultat intermediaire
 	private double saisie = 0;
 	private String partieEntiereSaisie = ""; // la partie entiere de la saisie en cours
 	private String partieDecimaleSaisie = ""; // la partie decimale sans le "."
+	private String signe ="" ;
 	private String saisieDoubleText = ""; //
 	private boolean efface = false;
 	boolean decimal = false; // indique si le signe "." est presse et donc on concatene apres la virgule
@@ -82,7 +83,9 @@ public class FenCalc extends JFrame {
 				// vHeight = b.getHeight() ;
 			}
 			// b.setPreferredSize(new Dimension(vWidth,vHeight));
+			b.setName(v);
 			b.setMnemonic(v.charAt(0));
+			b.addActionListener(new ChiffrePannListener());
 			this.panOperateur.add(b);
 			System.out.println(b.getText() + " h " + b.getHeight() + " w " + b.getWidth());
 
@@ -103,7 +106,7 @@ public class FenCalc extends JFrame {
 		Font ft = new Font("Tahoma", Font.LAYOUT_RIGHT_TO_LEFT, 16);
 		this.afficheur.setFont(ft);
 		this.afficheur.setHorizontalAlignment(JLabel.RIGHT);
-		this.raz();
+		raz();
 		String t = String.valueOf(valEnCours);
 
 		this.afficheur.setText(t);
@@ -142,34 +145,7 @@ public class FenCalc extends JFrame {
 		// this.panChiffre.addInputMethodListener(new ChiffrePannListener());
 		// go() ;
 	}
-	/*
-	 * protected void go() { Scanner sc = new Scanner(System.in) ; while()
-	 * 
-	 * }
-	 */
-
-	/*
-	 * effectue les calculs
-	 */
-	protected double calcule(double valEncours, double saisie, byte operation) {
-		double res = 0;
-		if (operation == '/') {
-			try {
-				res = valEncours / saisie;
-
-			} catch (ArithmeticException e) {
-				res = 0;
-			}
-
-		} else if (operation == '+') {
-			res = valEncours + saisie;
-		} else if (operation == '-') {
-			res = valEncours - saisie;
-		} else if (operation == '*') {
-			res = valEncours * saisie;
-		}
-		return res;
-	}
+	
 
 	/*
 	 * on constuit la classe anonyme ecoutant le panneau chiffre
@@ -179,14 +155,35 @@ public class FenCalc extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			// TODO Auto-generated method stub
-			// cas special du "="
-			double resultat;
 			// nom du bouton qui est egal a un chiffre ou un operateur
 			String sourceArg = arg0.getSource().toString().substring(20, 21);
 			affiche("arg0 " + arg0.getSource() + " Name : ");
 			// recupere la derniere valeur de la saisie
 			affiche("arg0 + modif source " + sourceArg);
+			gereOperation(sourceArg);
+
+		}
+	}
+/*
+ * affecte les operations 
+ */
+	protected void gereOperation(String operateur) {
+		if (operateur.equals("C")) {
+			raz();
+		} else if (((operateur.equals("+")) || (operateur.equals("-")) || (operateur.equals("*"))
+				|| (operateur.equals("/")) || (operateur.equals("=")))) {
+			ajouteOperateur(operateur);
+		} else if ((operateur == ".") || (operateur.equals("."))) {
+			decimal = true; // le signe decimal est deja presse
+			if (verifieVirgule(afficheur.getText()) == true) {
+
+				// on fait rien
+				affiche("deja une virgule ");
+
+			}
+		} else {
+			// ce sont des chiffres
+
 			try {
 				saisie = Double.valueOf(afficheur.getText());
 			} catch (NumberFormatException ex) {
@@ -195,48 +192,65 @@ public class FenCalc extends JFrame {
 				saisie = 0;
 				return;
 			}
-
 			affiche("Saisie = " + saisie);
-			if ((sourceArg == "=") || (sourceArg.equals("="))) {
-
-				resultat = calcule(valEnCours, saisie, operation);
-			} else {
-				// ce sont les chiffres ou les virgules on concatene
-				// on verifie qu il n y a pas deja une virgule et qu il a appuye sur une virgule
-				// on faite rien dans ce cas
-				if ((sourceArg == ".") || (sourceArg.equals("."))) {
-					decimal = true; // le signe decimal est deja presse
-					if (verifieVirgule(afficheur.getText()) == true) {
-
-						// on fait rien
-						affiche("deja une virgule ");
-
-					}
-				} else {
-					// ce sont des chiffres on les concatene
-					affiche("ajout chiffre nom bouton  " + arg0.getSource());
-					String res = concateneChiffre(afficheur.getText(), sourceArg);
-					affiche("listener res = " + res);
-					/*
-					 * try { saisie = Double.valueOf(res) ; } catch (NumberFormatException ex) {
-					 * ex.printStackTrace();
-					 * 
-					 * }
-					 */
-
-					mettreAJourAfficheur(res);
-					afficheur.setText(res);
-				}
-			}
-
+			// ce sont des chiffres on les concatene
+			// affiche("ajout chiffre nom bouton " + arg0.getSource());
+			String res = concateneChiffre(afficheur.getText(), operateur);
+			affiche("listener res = " + res);
+			mettreAJourAfficheur(res);
+			afficheur.setText(res);
 		}
 
+	}
+	/*
+	 * protected void go() { Scanner sc = new Scanner(System.in) ; while()
+	 * 
+	 * }
+	 */
+
+	/*
+	 * effectue les calculs et
+	 */
+	private double calcule(double valEncours, double saisie, String operation) {
+		double res = 0;
+		if (operation.equals("/")) {
+			try {
+				res = valEncours / saisie;
+
+			} catch (ArithmeticException e) {
+				e.printStackTrace();
+			} finally {
+				// si res = 0 && valencours != 0
+				// fait rien
+				// sinon
+				
+			}
+
+		} else if (operation.equals("+")) {
+			res = valEncours + saisie;
+		} else if (operation.equals("-")) {
+			res = valEncours - saisie;
+		} else if (operation.equals("*")) {
+			res = valEncours * saisie;
+		}
+		if (res < 0 )
+			this.signe = "-";
+		return res;
 	}
 
 	// remete à zero les compteurs et les valeurs
 	private void raz() {
-		this.saisie = 0;
 		this.valEnCours = 0;
+		this.operation = "";
+		this.razSaisie();
+		this.signe = "" ;
+	}
+
+	/*
+	 * remet a zero la saisie courante
+	 */
+	private void razSaisie() {
+		this.saisie = 0;
 		this.partieDecimaleSaisie = "";
 		this.partieEntiereSaisie = "0";
 		this.decimal = false;
@@ -262,6 +276,44 @@ public class FenCalc extends JFrame {
 		return trouve;
 	}
 
+	private void ajouteOperateur(String operateur) {
+		String[] eclateValeurDouble; 
+		affiche("Avant  ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
+				+ operation + " operateur " + operateur);
+		if (this.operation.isEmpty()) {
+			// premiere operation on affecte la saisie a la Valeur en cours
+			this.valEnCours = this.saisie;
+
+		} else if (operateur.equals("=")) {
+			// special operateur "=" operation finale
+			// on vide valEnCours et on affiche que saisie ==> si decide autre operation on
+			// repart sur operation.isempty
+			// on ne fait donc pas le raz
+			affiche("dans = ") ;
+			this.saisie = this.calcule(this.valEnCours, this.saisie, this.operation);
+			affiche("val en cours = " + this.saisie);
+			this.valEnCours = 0;
+			// si saisie est < a 0 on fait valeur absolue
+			eclateValeurDouble = String.valueOf(Math.abs(this.saisie)).split(".", 2) ;
+			this.partieEntiereSaisie = eclateValeurDouble[0];
+			// le second string garde '.' puis les chiffres ares la virgule 
+			this.partieDecimaleSaisie = eclateValeurDouble[1].substring(1) ;
+			this.operation = "";
+			affiche(this.partieEntiereSaisie + " ..  " + this.partieDecimaleSaisie );
+			affiche("operateur = " + operateur + " saisie " + this.saisie + " val en cours " + this.valEnCours);
+			return;
+		} else {
+			// on calcule la valeur intermediaire
+			this.valEnCours = this.calcule(this.valEnCours, this.saisie, this.operation);
+			affiche("val en cours = " + this.valEnCours);
+		}
+		// on remet a zero les saisie et on affecte l'operateur
+		this.razSaisie();
+		this.operation = operateur;
+		affiche("Apres ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
+				+ operation);
+	}
+
 	/*
 	 * concatene a un string saisie la valeur strAConcat : si c'est 0 alors on
 	 * change le 0 par le chiffre
@@ -283,14 +335,14 @@ public class FenCalc extends JFrame {
 			affiche("apres concat :" + this.partieEntiereSaisie);
 
 		}
-		resultat = this.partieEntiereSaisie + "." + this.partieDecimaleSaisie;
+		resultat = this.signe + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie;
 		try {
 			this.saisie = Double.parseDouble(resultat);
 		} catch (NumberFormatException ex) {
 			ex.printStackTrace();
 
 		}
-		affiche("Resultat : string : " + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);
+		affiche("Resultat : string : " + this.signe  + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);
 		affiche("saisie Double : " + this.saisie);
 
 		return resultat;
