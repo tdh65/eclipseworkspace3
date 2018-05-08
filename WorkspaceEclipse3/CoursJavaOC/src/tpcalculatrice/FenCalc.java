@@ -197,8 +197,8 @@ public class FenCalc extends JFrame {
 		// met a jour les chiffres en string
 	//	affiche("Avant mettreaJour "+ res );
 		this.mettreAJourAfficheur( res);
-		affiche("Avant afficheur "+ res );
-	//	this.afficheur.setText(res);
+	//	affiche("Avant afficheur "+ res );
+		this.afficheur.setText(res);
 
 	}
 	/*
@@ -423,7 +423,7 @@ public class FenCalc extends JFrame {
 		// On ne récupère que la partie décimale :
 		this.partieDecimaleSaisie = str.substring(str.indexOf(separator) + 1);
 		this.partieEntiereSaisie = str.substring(0, str.indexOf(separator));
-		if (this.partieDecimaleSaisie.equals("0" ) && (!pStrLastParam.equals(0))) {
+		if (this.partieDecimaleSaisie.equals("0" ) && (!pStrLastParam.equals("0"))) {
 			this.partieDecimaleSaisie = "" ;
 		}
 		if (valDouble < 0)
