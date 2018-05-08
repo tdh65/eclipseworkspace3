@@ -87,7 +87,7 @@ public class FenCalc extends JFrame {
 			b.setMnemonic(v.charAt(0));
 			b.addActionListener(new ChiffrePannListener());
 			this.panOperateur.add(b);
-			System.out.println(b.getText() + " h " + b.getHeight() + " w " + b.getWidth());
+			//System.out.println(b.getText() + " h " + b.getHeight() + " w " + b.getWidth());
 
 		}
 
@@ -141,9 +141,7 @@ public class FenCalc extends JFrame {
 			this.panChiffre.add(b);
 
 		}
-		// this.panChiffre.addActionListener(new ChiffrePannListener());
-		// this.panChiffre.addInputMethodListener(new ChiffrePannListener());
-		// go() ;
+		
 	}
 
 	/*
@@ -158,7 +156,7 @@ public class FenCalc extends JFrame {
 			String sourceArg = arg0.getSource().toString().substring(20, 21);
 			affiche("arg0 " + arg0.getSource() + " Name : ");
 			// recupere la derniere valeur de la saisie
-			affiche("arg0 + modif source " + sourceArg);
+		//	affiche("arg0 + modif source " + sourceArg);
 			gereOperation(sourceArg);
 
 		}
@@ -178,7 +176,7 @@ public class FenCalc extends JFrame {
 			res = ajouteOperateur(operateur);
 
 		} else {
-			// ce sont des chiffres
+			// ce sont des chiffres a concatener a la saisie ou une virgule 
 
 			try {
 				saisie = Double.valueOf(afficheur.getText());
@@ -188,19 +186,19 @@ public class FenCalc extends JFrame {
 				saisie = 0;
 
 			}
-			affiche("Saisie = " + saisie);
+		//	affiche("Saisie = " + saisie);
 			// ce sont des chiffres on les concatene
 			// affiche("ajout chiffre nom bouton " + arg0.getSource());
 			res = concateneChiffre(afficheur.getText(), operateur);
-			affiche("listener res = " + res);
+		//	affiche("listener res = " + res);
 
 			// afficheur.setText(res);
 		}
 		// met a jour les chiffres en string
-		affiche("Avant mettreaJour "+ res );
+	//	affiche("Avant mettreaJour "+ res );
 		this.mettreAJourAfficheur( res);
 		affiche("Avant afficheur "+ res );
-		this.afficheur.setText(res);
+	//	this.afficheur.setText(res);
 
 	}
 	/*
@@ -285,20 +283,19 @@ public class FenCalc extends JFrame {
 	 */
 	private String ajouteOperateur(String operateur) {
 		String res = "";
-		String[] eclateValeurDouble; // pour reaffecter au la valeur courante affichee dans le jlabel
-		affiche("Avant  ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
-				+ operation + " operateur " + operateur);
+	//	affiche("Avant  ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
+	//			+ operation + " operateur " + operateur);
 		/*
 		 * oblige de le mettre en premier sinon c'est le operateur "" qui est pris et la
 		 * virgule n est jamais traitee
 		 */
 		if (operateur.equals(".")) {
 
-			affiche("ajouteoperateur  . ");
+			affiche("AjouteOperateur (virgule  . ) ");
 			decimal = true; // le signe decimal est deja presse
 			if (verifieVirgule(afficheur.getText()) == true) {
 				// on fait rien
-				affiche("deja une virgule ");
+		//		affiche("deja une virgule ");
 			}
 			this.eclateDouble2String(this.saisie, operateur);
 			return (this.signe + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);
@@ -311,37 +308,33 @@ public class FenCalc extends JFrame {
 			this.razSaisie();
 			this.eclateDouble2String(this.saisie, operateur);
 			this.operation = operateur;
-			affiche("fin ajouteoperateur .isempty val en cours " + this.valEnCours + " operation " + this.operation
-					+ " saisie " + this.saisie);
+	//		affiche("fin ajouteoperateur .isempty val en cours " + this.valEnCours + " operation " + this.operation
+	//				+ " saisie " + this.saisie);
 		} else if (operateur.equals("=")) {
 			// special operateur "=" operation finale
 			// on vide valEnCours et on affiche que saisie ==> si decide autre operation on
 			// repart sur operation.isempty
 			// on ne fait donc pas le raz
-			affiche("Affichage demande suite a \" = \" ");
+	//		affiche("Affichage demande suite a \" = \" ");
 			this.saisie = this.calcule(this.valEnCours, this.saisie, this.operation);
-			affiche("val en cours affecte a saisie = " + this.saisie);
+	//		affiche("val en cours affecte a saisie = " + this.saisie);
 			this.valEnCours = 0;
 			this.operation = "" ; // pour transferer ensuite lorsqu on appuie sur un operateur
 			this.eclateDouble2String(this.saisie, operateur);
-			affiche(this.partieEntiereSaisie + " ..  " + this.partieDecimaleSaisie);
-			affiche("operateur = " + operateur + " saisie " + this.saisie + " val en cours " + this.valEnCours);
-			// met a jour l'afficheur avec this.saisie
-			// this.mettreAJourAfficheur(this.signe +
-			// this.partieEntiereSaisie+"."+this.partieDecimaleSaisie ); // deux valeurs
-			// vides !! puisque c est saisie qui a une valeur et ne fait pas d'op
-
+	//		affiche(this.partieEntiereSaisie + " ..  " + this.partieDecimaleSaisie);
+	//		affiche("operateur = " + operateur + " saisie " + this.saisie + " val en cours " + this.valEnCours);
+		
 		} else {
 			// on calcule la valeur intermediaire avec un operateur
 			this.valEnCours = this.calcule(this.valEnCours, this.saisie, this.operation);
-			affiche("val en cours apres = " + this.operation + " = " + this.valEnCours + " nouvel operateur "
-					+ operateur);
+	/*		affiche("val en cours apres = " + this.operation + " = " + this.valEnCours + " nouvel operateur "
+					+ operateur);*/
 			// on remet a zero les saisie et on affecte l'operateur
 			this.razSaisie();
 			this.eclateDouble2String(this.saisie, operateur);
 			this.operation = operateur;
-			affiche("Apres ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
-					+ operation);
+		/*	affiche("Apres ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
+					+ operation);*/
 
 			return res.valueOf(this.saisie);
 		}
@@ -361,14 +354,14 @@ public class FenCalc extends JFrame {
 						 */
 			this.partieDecimaleSaisie = this.partieDecimaleSaisie + (strAConcat);
 		} else {
-			affiche("avant concat :" + this.partieEntiereSaisie + " concat " + strAConcat);
+	//		affiche("avant concat :" + this.partieEntiereSaisie + " concat " + strAConcat);
 			if (this.partieEntiereSaisie.equals("0")) {
-				affiche("this.partieentiere " + this.partieEntiereSaisie);
+	//			affiche("this.partieentiere " + this.partieEntiereSaisie);
 				this.partieEntiereSaisie = strAConcat;
 			} else
 				this.partieEntiereSaisie = this.partieEntiereSaisie + strAConcat;
 
-			affiche("apres concat :" + this.partieEntiereSaisie);
+	//		affiche("apres concat :" + this.partieEntiereSaisie);
 
 		}
 		resultat = this.signe + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie;
@@ -378,8 +371,8 @@ public class FenCalc extends JFrame {
 			ex.printStackTrace();
 
 		}
-		affiche("Resultat : string : " + this.signe + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);
-		affiche("saisie Double : " + this.saisie);
+//		affiche("Resultat : string : " + this.signe + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);
+//		affiche("saisie Double : " + this.saisie);
 
 		return resultat;
 
@@ -393,7 +386,7 @@ public class FenCalc extends JFrame {
 	 * rafraichit l afficheur
 	 */
 	protected String mettreAJourAfficheur(String pStrVal) {
-		affiche(" dans mettreAJourAfficheur val : " + pStrVal+ " saisie " + saisie);
+	//	affiche(" dans mettreAJourAfficheur val : " + pStrVal+ " saisie " + saisie);
 		if (!decimal) {
 			// n affiche pas le .00
 			return new String(pStrVal.split(".", 2)[0]);
@@ -413,7 +406,7 @@ public class FenCalc extends JFrame {
 	 * ci dessous transfere les donnees dans partieEntiere , partieDecimale, Signe
 	 * si plastParam est 0 alors on ajoute 0 sinon on enleve zero 
 	 * ex 23 plast 0 => 23.0
-	 *    25 plast 1 => 23.1
+	 *    25 plast 1 => 23.1 et bon olus 23.01 
 	 */
 	protected void eclateDouble2String(double valDouble, String pStrLastParam) {
 		// on crée un DecimalFormat pour formater le double en chaine :
@@ -424,7 +417,7 @@ public class FenCalc extends JFrame {
 
 		// On formate le double en chaine
 		String str = df.format(valDouble);
-		affiche("on va eclater :" + str);
+//		affiche("on va eclater :" + str);
 		// On récupère le caractère séparateur entre la partie entière et décimale :
 		char separator = df.getDecimalFormatSymbols().getDecimalSeparator();
 		// On ne récupère que la partie décimale :
@@ -435,8 +428,8 @@ public class FenCalc extends JFrame {
 		}
 		if (valDouble < 0)
 			this.signe = "-";
-		affiche("fin eclateDouble : sign ent dec" + this.signe + this.partieEntiereSaisie + "."
-				+ this.partieDecimaleSaisie);
+//		affiche("fin eclateDouble : sign ent dec" + this.signe + this.partieEntiereSaisie + "."
+//				+ this.partieDecimaleSaisie);
 
 	}
 
