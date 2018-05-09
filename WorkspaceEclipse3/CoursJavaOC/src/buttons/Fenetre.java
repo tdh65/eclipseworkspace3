@@ -28,6 +28,7 @@ public class Fenetre extends JFrame {
 	private boolean animated = true;
 	private boolean backX, backY;
 	private int x, y;
+	private Thread t ;
 
 	public Fenetre() {
 		JPanel panelBouton = new JPanel();
@@ -96,9 +97,11 @@ public class Fenetre extends JFrame {
 			compteurClics1++;
 			label1.setText("Vous avez cliqué sur Bouton 1 : " + compteurClics1 + " !");
 			animated = true;
+			t = new Thread( new PlayAnimation()) ;
+			t.start(); 
 			bouton.setEnabled(false);
 			bouton2.setEnabled(true);
-			go();
+			// go(); supprime du fait du thread 
 		}
 
 	}
@@ -319,5 +322,9 @@ public class Fenetre extends JFrame {
 	public void setCompteurClics1(int compteurClics1) {
 		this.compteurClics1 = compteurClics1;
 	}
-
+	class PlayAnimation implements Runnable {
+		public void run() {
+			go();
+		}
+	}
 }
