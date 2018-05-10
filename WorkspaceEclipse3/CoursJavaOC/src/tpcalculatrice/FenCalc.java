@@ -153,7 +153,7 @@ public class FenCalc extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			// nom du bouton qui est egal a un chiffre ou un operateur
 			String sourceArg = arg0.getSource().toString().substring(20, 21);
-			affiche("arg0 " + arg0.getSource() + " Name : ");
+			// affiche("arg0 " + arg0.getSource() + " Name : ");
 			// recupere la derniere valeur de la saisie
 		//	affiche("arg0 + modif source " + sourceArg);
 			gereOperation(sourceArg);
@@ -405,7 +405,7 @@ public class FenCalc extends JFrame {
 	 * ci dessous transfere les donnees dans partieEntiere , partieDecimale, Signe
 	 * si plastParam est 0 alors on ajoute 0 sinon on enleve zero 
 	 * ex 23 plast 0 => 23.0
-	 *    25 plast 1 => 23.1 et bon olus 23.01 
+	 *    25 plast 1 => 23.1 et non plus 23.01 
 	 */
 	protected void eclateDouble2String(double valDouble, String pStrLastParam) {
 		// on crée un DecimalFormat pour formater le double en chaine :
