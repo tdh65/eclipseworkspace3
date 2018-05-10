@@ -2,6 +2,3 @@ Manifest-Version: 1.0
 Sealed: true
 Main-Class: tpcalculatrice.TestCalc
 
-Name: tpcalculatrice/
-Sealed: false
-

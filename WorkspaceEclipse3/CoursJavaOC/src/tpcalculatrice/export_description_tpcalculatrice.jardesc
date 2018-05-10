@@ -7,9 +7,7 @@
     <manifest generateManifest="false" mainClassHandleIdentifier="=CoursJavaOC/src&lt;tpcalculatrice{TestCalc.java[TestCalc" manifestLocation="/CoursJavaOC/src/tpcalculatrice/tpcalcul_manifest" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
         <sealing sealJar="true">
             <packagesToSeal/>
-            <packagesToUnSeal>
-                <package handleIdentifier="=CoursJavaOC/src&lt;tpcalculatrice"/>
-            </packagesToUnSeal>
+            <packagesToUnSeal/>
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
