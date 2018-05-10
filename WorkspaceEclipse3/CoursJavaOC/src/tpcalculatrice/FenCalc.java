@@ -1,6 +1,5 @@
 package tpcalculatrice;
 
-import java.math.*;
 import java.text.DecimalFormat;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,12 +8,12 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Scanner;
-
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 
 public class FenCalc extends JFrame {
 
@@ -47,7 +46,7 @@ public class FenCalc extends JFrame {
 		this.setTitle("Calculatrice");
 		this.setLocationRelativeTo(null);
 		this.setSize(300, 300);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		// construit le panneau chiffre
 		this.construitPanneauChiffre();
 		// construit le panneau afficheur
@@ -105,7 +104,7 @@ public class FenCalc extends JFrame {
 		// this.afficheur.setForeground(Color.orange);
 		Font ft = new Font("Tahoma", Font.LAYOUT_RIGHT_TO_LEFT, 16);
 		this.afficheur.setFont(ft);
-		this.afficheur.setHorizontalAlignment(JLabel.RIGHT);
+		this.afficheur.setHorizontalAlignment(SwingConstants.RIGHT);
 		raz();
 		String t = String.valueOf(valEnCours);
 
@@ -336,7 +335,7 @@ public class FenCalc extends JFrame {
 		/*	affiche("Apres ajoute operateur : Valencours " + this.valEnCours + " saisie " + saisie + " operation "
 					+ operation);*/
 
-			return res.valueOf(this.saisie);
+			return String.valueOf(this.saisie);
 		}
 
 		return (this.signe + this.partieEntiereSaisie + "." + this.partieDecimaleSaisie);

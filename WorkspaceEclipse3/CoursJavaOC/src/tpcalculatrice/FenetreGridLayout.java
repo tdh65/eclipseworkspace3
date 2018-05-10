@@ -1,10 +1,10 @@
 package tpcalculatrice;
 
-import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /*
  * classe de construction dun jframe par defaut
@@ -19,7 +19,7 @@ public class FenetreGridLayout extends JFrame {
 		this.setTitle(this.nameFenetre);
 		this.setLocationRelativeTo(null);
 		this.setSize(300, 300);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		/*
 		 * on ajoute le JPanel qui remplace le ContentPane du JFrame
