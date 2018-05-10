@@ -131,12 +131,12 @@ public class FenCalc extends JFrame {
 
 		String[] t = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "0", ".", "=" };
 		for (String v : t) {
-			affiche("v " + v);
+			//affiche("v " + v);
 			JButton b = new JButton(v);
 			b.setName(v);
 			b.setMnemonic(v.charAt(0));
 			b.addActionListener(new ChiffrePannListener());
-			affiche("nom bouton " + b.getName());
+			//affiche("nom bouton " + b.getName());
 			this.panChiffre.add(b);
 
 		}
@@ -153,7 +153,6 @@ public class FenCalc extends JFrame {
 		public void actionPerformed(ActionEvent arg0) {
 			// nom du bouton qui est egal a un chiffre ou un operateur
 			String sourceArg = arg0.getSource().toString().substring(20, 21);
-			// affiche("arg0 " + arg0.getSource() + " Name : ");
 			// recupere la derniere valeur de la saisie
 		//	affiche("arg0 + modif source " + sourceArg);
 			gereOperation(sourceArg);
@@ -239,7 +238,8 @@ public class FenCalc extends JFrame {
 		return res;
 	}
 
-	// remete à zero les compteurs et les valeurs
+	// remet à zero les compteurs et les valeurs
+	// an appelle la methode specialisee sur saisie
 	private void raz() {
 		this.valEnCours = 0;
 		this.operation = "";
@@ -273,7 +273,7 @@ public class FenCalc extends JFrame {
 				}
 			}
 		}
-		affiche("pour saisie : " + saisie + " trouve : " + trouve);
+		//affiche("pour saisie : " + saisie + " trouve : " + trouve);
 		return trouve;
 	}
 
@@ -290,7 +290,7 @@ public class FenCalc extends JFrame {
 		 */
 		if (operateur.equals(".")) {
 
-			affiche("AjouteOperateur (virgule  . ) ");
+			//affiche("AjouteOperateur (virgule  . ) ");
 			decimal = true; // le signe decimal est deja presse
 			if (verifieVirgule(afficheur.getText()) == true) {
 				// on fait rien
@@ -314,7 +314,7 @@ public class FenCalc extends JFrame {
 			// on vide valEnCours et on affiche que saisie ==> si decide autre operation on
 			// repart sur operation.isempty
 			// on ne fait donc pas le raz
-	//		affiche("Affichage demande suite a \" = \" ");
+
 			this.saisie = this.calcule(this.valEnCours, this.saisie, this.operation);
 	//		affiche("val en cours affecte a saisie = " + this.saisie);
 			this.valEnCours = 0;
