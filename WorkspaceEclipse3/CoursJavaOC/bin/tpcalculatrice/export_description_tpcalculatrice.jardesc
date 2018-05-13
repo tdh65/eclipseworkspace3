@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="/home/apprenti/Téléchargements/tpcalculatrice.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/CoursJavaOC/src/tpcalculatrice/export_description_tpcalculatrice.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="true" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="false" mainClassHandleIdentifier="=CoursJavaOC/src&lt;tpcalculatrice{TestCalc.java[TestCalc" manifestLocation="/CoursJavaOC/src/tpcalculatrice/tpcalcul_manifest" manifestVersion="1.0" reuseManifest="true" saveManifest="true" usesManifest="true">
+        <sealing sealJar="true">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <javaElement handleIdentifier="=CoursJavaOC/src&lt;tpcalculatrice"/>
+    </selectedElements>
+</jardesc>

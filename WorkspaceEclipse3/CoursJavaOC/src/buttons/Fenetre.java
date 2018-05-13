@@ -8,8 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /*
@@ -17,18 +20,21 @@ import javax.swing.JPanel;
  */
 public class Fenetre extends JFrame {
 	private Panneau pan = new Panneau();
-	private String nameFenetre = "Balls with Layout";
-	private JButton bouton2 = new JButton("Bouton 2");
 
-	private BoutonAmeliore bouton = new BoutonAmeliore("Mon Bouton");
-	// private JButton bouton = new JButton("Mon Bouton" );
+	private String nameFenetre = "Balls with Layout";
+	private JButton bouton2 = new JButton("Stop");
+	private JCheckBox morph = new JCheckBox("Mode Morphing");
+	private JComboBox<String> forme;
+	private JButton bouton = new JButton("Go");
+
 	private JPanel container = new JPanel();
+	private JPanel panNorth = new JPanel();
 	private JLabel label1 = new JLabel();
 	private int compteurClics1 = 0, compteurClics2 = 0;
 	private boolean animated = true;
 	private boolean backX, backY;
 	private int x, y;
-	private Thread t ;
+	private Thread t;
 
 	public Fenetre() {
 		JPanel panelBouton = new JPanel();
@@ -63,9 +69,20 @@ public class Fenetre extends JFrame {
 		bouton2.addActionListener(new Bouton3Listener());
 		bouton.setEnabled(false);
 		// on ajoute les deux boutons au panelBouton
+		// ajoute le checkbox
+		morph.setPreferredSize(new Dimension(125, 20));
+		morph.setSelected(false);
+		morph.addActionListener(new MorphListener());
+		String[] formes = { "ROND", "TRIANGLE", "CARRE", "ETOILE" };
+		forme = new JComboBox<>(formes);
+		forme.setPreferredSize(new Dimension(75, 20));
+		forme.setToolTipText("Selectionnez la forme");
+		forme.addActionListener(new FormeListener());
 		panelBouton.add(bouton);
 		panelBouton.add(bouton2);
 
+		panNorth.add(this.forme, BorderLayout.NORTH);
+		panNorth.add(this.morph, BorderLayout.NORTH);
 		// on previent le JFrame que le JPanel sera son contentPane
 
 		container.setBackground(Color.white);
@@ -73,7 +90,10 @@ public class Fenetre extends JFrame {
 		container.add(pan, BorderLayout.CENTER);
 		// rajoute le panel boutonPanel au sud
 		container.add(panelBouton, BorderLayout.SOUTH);
-		container.add(this.getLabel1(), BorderLayout.NORTH);
+		// container.add(this.getLabel1(), BorderLayout.NORTH);
+		// container.add(comp)
+		container.add(this.panNorth, BorderLayout.NORTH);
+
 		this.setContentPane(container);
 		this.setVisible(true);
 		go();
@@ -86,7 +106,7 @@ public class Fenetre extends JFrame {
 	 * classe ecoutant le premier bouton
 	 */
 	class BoutonListener implements ActionListener {
-
+		// pour bouton Go animation
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			// TODO Auto-generated method stub
@@ -94,29 +114,41 @@ public class Fenetre extends JFrame {
 
 			// label1.setText("Vous avez cliqué sur Bouton " + this.compteurClics1++ + "
 			// Fois");
-			compteurClics1++;
-			label1.setText("Vous avez cliqué sur Bouton 1 : " + compteurClics1 + " !");
-			animated = true;
-			t = new Thread( new PlayAnimation()) ;
-			t.start(); 
-			bouton.setEnabled(false);
-			bouton2.setEnabled(true);
-			// go(); supprime du fait du thread 
+			JOptionPane jop = new JOptionPane();
+			int option = jop.showConfirmDialog(null, "Voulez vous lancer l'animation?", "Lancement de l'animation",
+					JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (option != JOptionPane.NO_OPTION) {
+				compteurClics1++;
+				label1.setText("Vous avez cliqué sur Bouton 1 : " + compteurClics1 + " !");
+				animated = true;
+				t = new Thread(new PlayAnimation());
+				t.start();
+				bouton.setEnabled(false);
+				bouton2.setEnabled(true);
+				// go(); supprime du fait du thread
+			}
 		}
 
 	}
 
+	// pour bouton Stop animation
 	class Bouton2Listener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			compteurClics2++;
-			label1.setText("Vous avez clique sur le bouton 2 " + compteurClics2 + "Fois !!! ");
-			animated = false;
-			bouton.setEnabled(true);
-			bouton2.setEnabled(false);
+			JOptionPane jop = new JOptionPane();
+			int option = jop.showConfirmDialog(null, "Voulez-vous arreter l'animation ?", "Arrêt de l'animation ?",
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (option != JOptionPane.NO_OPTION && option != JOptionPane.CANCEL_OPTION && option != jop.CLOSED_OPTION) {
 
+				compteurClics2++;
+				label1.setText("Vous avez clique sur le bouton 2 " + compteurClics2 + "Fois !!! ");
+
+				animated = false;
+				bouton.setEnabled(true);
+				bouton2.setEnabled(false);
+			}
 		}
 
 	}
@@ -130,6 +162,29 @@ public class Fenetre extends JFrame {
 
 		}
 
+	}
+
+	class FormeListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			getPan().setForme(forme.getSelectedItem().toString());
+
+		}
+	}
+
+	class MorphListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			if (morph.isSelected())
+				pan.setMorph(true);
+			// sino on fait rien
+			else
+				pan.setMorph(false);
+		}
+	}
+
+	class PlayAnimation implements Runnable {
+		public void run() {
+			go();
+		}
 	}
 
 	/*
@@ -247,9 +302,9 @@ public class Fenetre extends JFrame {
 				pan.setPosX(--x);
 			// idem pour l axe y
 			if (!backY)
-				pan.setPosy(++y);
+				pan.setPosY(++y);
 			else
-				pan.setPosy(--y);
+				pan.setPosY(--y);
 			// on redessinne le panneau
 			pan.repaint();
 
@@ -322,9 +377,13 @@ public class Fenetre extends JFrame {
 	public void setCompteurClics1(int compteurClics1) {
 		this.compteurClics1 = compteurClics1;
 	}
-	class PlayAnimation implements Runnable {
-		public void run() {
-			go();
-		}
+
+	public Panneau getPan() {
+		return pan;
 	}
+
+	public void setPan(Panneau pan) {
+		this.pan = pan;
+	}
+
 }
